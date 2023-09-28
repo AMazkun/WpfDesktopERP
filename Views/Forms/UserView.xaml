@@ -1,0 +1,109 @@
+﻿<Window x:Class="WpfApp5.Views.Forms.UserView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:dbcontext="clr-namespace:WpfApp5.DBContext" 
+        Name="EditUserWnd" Title="User Edit" 
+        Height="420" Width="360" Loaded="Window_Loaded">
+
+
+    <Grid Margin="0,0,0,0">
+        <Grid x:Name="grid1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="350" Height="400">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="130"/>
+                <ColumnDefinition Width="Auto" MinWidth="200"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel x:Name="EditPanel" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="2" Margin="-5,23,10,17">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding pointedUser.Suspended}" Value="True">
+                                <Setter Property="Background" Value="Red" />
+                                <Setter Property="Opacity" Value=".3" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding pointedUser.Suspended}" Value="False">
+                                <Setter Property="Background" Value="Blue" />
+                                <Setter Property="Opacity" Value=".3" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+            </StackPanel>
+
+            <Label Grid.Column="0" Content="User Id:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="0" VerticalAlignment="Center" Height="26" Width="50"/>
+            <Label Grid.Column="1" HorizontalAlignment="Left" Grid.Row="0" Content="{Binding pointedUser.Id}" />
+
+            <Label Grid.Column="0" Content="Suspended:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="1" VerticalAlignment="Center" Height="26" Width="72"/>
+            <CheckBox x:Name="suspendedCheckBox" Grid.Column="1"  Grid.Row="1" Content="" HorizontalAlignment="Left" IsChecked="{Binding pointedUser.Suspended, Mode=TwoWay}" Margin="3,0,0,0" VerticalAlignment="Center" Height="14" Width="20"/>
+
+            <Label Grid.Column="0" Content="Login:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="2" VerticalAlignment="Center" Height="26" Width="70"/>
+            <TextBox x:Name="nameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="3,0,0,0" Grid.Row="2" Text="{Binding pointedUser.UserName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+
+            <Label Grid.Column="0" Content="First Name:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="3" VerticalAlignment="Center" Height="26" Width="70"/>
+            <TextBox x:Name="firstNameTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="18" Margin="3,0,0,0" Grid.Row="3" Text="{Binding pointedUser.FirstName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+
+            <Label Grid.Column="0" Content="Last Name:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="4" VerticalAlignment="Center" Height="26" Width="69"/>
+            <TextBox x:Name="lastNameTextBox" Grid.Column="4" HorizontalAlignment="Left" Height="18" Margin="3,0,0,0" Grid.Row="4" Text="{Binding pointedUser.LastName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+
+            <Label Grid.Column="0" Content="Role:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="5" VerticalAlignment="Center" Height="26" Width="36"/>
+            <ComboBox x:Name="userRoleCombo" Grid.Column="1"  Grid.ColumnSpan="1" Grid.Row="5" HorizontalAlignment="Left" Width="150" Margin="3,0,0,4"
+                      IsEditable="True" IsReadOnly="True"
+                      DisplayMemberPath="Name"                       
+                      Text="{Binding pointedUser.RoleName, Mode=OneWay}"
+                      ItemsSource="{Binding AllRoles}" 
+                      SelectedItem="{Binding PointedUserRole}"
+                />
+
+
+            <Label Grid.Column="0" Content="User Active:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="7" VerticalAlignment="Center" Height="26" Width="72"/>
+            <CheckBox x:Name="activeCheckBox" Grid.Column="1"  Grid.Row="7" Content="" HorizontalAlignment="Left" IsChecked="{Binding pointedUser.Active, Mode=OneWay}" IsHitTestVisible="False" Focusable="False" Margin="3,0,0,0" VerticalAlignment="Center" Height="14" Width="20"/>
+
+            <Label Grid.Column="0" Content="Last Login Date:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="8" VerticalAlignment="Center" Height="26" Width="94"/>
+            <TextBox x:Name="lastLoginDateDate" Grid.Column="1" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="8" Text="{Binding pointedUser.LastLoginDate, StringFormat={}{0:dd.MM.yyyy}, Mode=OneWay}" IsReadOnly="True" Width="90" VerticalAlignment="Center" Height="18"/>
+
+            <!-- CREATOR-->
+            <Label Grid.Column="0"  Grid.Row="9" Content="Created By:" HorizontalAlignment="Left" Margin="3,0,0,0" VerticalAlignment="Center" Height="26" Width="70"/>
+            <TextBox x:Name="createdByTextBox" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Left" Height="18" Margin="3,0,0,0" Text="{Binding pointedUser.CreatedByName, Mode=OneWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" IsReadOnly="True" Width="120"/>
+
+            <Label Grid.Column="0"  Grid.Row="10" Content="Created On:" HorizontalAlignment="Left" Margin="3,0,0,0"  VerticalAlignment="Center" Height="26" Width="73"/>
+            <TextBox x:Name="createdOnDate" Grid.Column="1"  Grid.Row="10" HorizontalAlignment="Left" Margin="3,0,0,0" Text="{Binding pointedUser.CreatedOn, StringFormat={}{0:dd.MM.yyyy}, Mode=OneWay}" IsReadOnly="True" Width="90" VerticalAlignment="Center" Height="18"/>
+
+            <Label Grid.Column="0" Content="Modified By:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="11" VerticalAlignment="Center" Height="26" Width="76"/>
+            <TextBox x:Name="modifiedByTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="18" Margin="3,0,0,0" Grid.Row="11" Text="{Binding pointedUser.ModyfiedByName, Mode=OneWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" IsReadOnly="True"  Width="120"/>
+
+            <Label Grid.Column="0" Content="Modified On:" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="12" VerticalAlignment="Center" Height="26" Width="80"/>
+            <TextBox x:Name="modifiedOnDate" Grid.Column="1" HorizontalAlignment="Left" Margin="3,0,0,0" Grid.Row="12" Text="{Binding pointedUser.ModifiedOn, StringFormat={}{0:dd.MM.yyyy}, Mode=OneWay}" IsReadOnly="True" Width="90" VerticalAlignment="Center" Height="18"/>
+
+            <StackPanel  Grid.Row="14" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" FlowDirection="RightToLeft" Background="Bisque" Margin="0,9,0,0" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="0,0,0,0"/>
+                        <Setter Property="Width" Value="80"/>
+                    </Style>
+                </StackPanel.Resources>
+
+                <Button HorizontalAlignment="Right"  Margin="5,2,10,2" Click="Click_Close_Window">Cancel</Button>
+                <Button HorizontalAlignment="Right"  Margin="0,2,10,2" Click="btnApply_click">    Apply </Button>
+            </StackPanel>
+
+        </Grid>
+    </Grid>
+
+</Window>

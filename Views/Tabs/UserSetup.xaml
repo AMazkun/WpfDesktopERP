@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="WpfApp5.Views.Tabs.UserSetup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp5.Views.Tabs"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="10"/>
+            <ColumnDefinition Width="Auto" MinWidth="10"/>
+            <ColumnDefinition Width="Auto" MinWidth="10"/>
+            <ColumnDefinition Width="Auto" MinWidth="100"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+            <RowDefinition Height="Auto" MinHeight="10"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="ChangePasswordPanet" Grid.Row="1" Grid.Column="0" Grid.RowSpan="7" Grid.ColumnSpan="3" Margin="0,0,-10,-10" Background="#1F463C3C" Loaded="Control_Loaded" />
+        
+        <Label Grid.Row="1" Grid.Column="1" Content="Change User Password:" FontWeight="Bold" HorizontalAlignment="Left"  VerticalAlignment="Top" />
+        <Label Grid.Row="3" Grid.Column="1" Content="Old Password"  HorizontalAlignment="Right"  VerticalAlignment="Top"  Width="103"/>
+        <PasswordBox x:Name="OldPassword" Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" PasswordChanged="PasswordChanged"/>
+
+        <Label Grid.Row="5" Grid.Column="1" Content="New Password"  HorizontalAlignment="Right"  VerticalAlignment="Center"  Width="103"/>
+        <PasswordBox x:Name="NewPassword"  Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" PasswordChanged="PasswordChanged"/>
+        <Label Grid.Row="6" Grid.Column="1" Content="New Again"     HorizontalAlignment="Right"  VerticalAlignment="Center"  Width="103"/>
+        <PasswordBox x:Name="NewAgain"  Grid.Row="6" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" PasswordChanged="PasswordChanged"/>
+
+        <StackPanel  Grid.Row="14" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="3" FlowDirection="RightToLeft" Background="Bisque"  Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="0,0,0,0"/>
+                    <Setter Property="Width" Value="80"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <Button HorizontalAlignment="Right"  Margin="5,2,10,2" Click="Click_Clear_PassFields">Clear</Button>
+            <Button HorizontalAlignment="Right"  Margin="0,2,10,2" Click="Click_Change_Password">Apply</Button>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

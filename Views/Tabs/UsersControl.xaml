@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="WpfApp5.Views.Tabs.UsersControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinHeight="400" MinWidth="700">
+    
+    <Grid Margin="10,10,10,10" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="66"/>
+            <ColumnDefinition Width="43"/>
+            <ColumnDefinition Width="215*"/>
+            <ColumnDefinition Width="121*"/>
+            <ColumnDefinition Width="121*"/>
+            <ColumnDefinition Width="121*"/>
+            <ColumnDefinition Width="121*"/>
+            <ColumnDefinition Width="121*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="39*"/>
+            <RowDefinition Height="54*"/>
+            <RowDefinition Height="23*"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="82*"/>
+            <RowDefinition Height="31*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <ListView Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="8" Grid.RowSpan="9" x:Name="allUsersListView" 
+                  ItemsSource="{Binding allUsers, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding PointedUser}" SelectionMode="Single" Margin="10,10,10,0" >
+            <ListView.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Control.VerticalContentAlignment" Value="Stretch"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Active}" Value="True">
+                            <Setter Property="Control.Background" Value="Yellow" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Suspended}" Value="True">
+                            <Setter Property="Control.Background" Value="Red" />
+                            <Setter Property="Control.Opacity" Value=".5" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+            
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit"         Command="{Binding EditUser}"/>
+                    <MenuItem Header="Delete"       Command="{Binding DeleteUser}"/>
+                    <MenuItem Header="Suspend"      Command="{Binding SuspendUser}"/>
+                    <MenuItem Header="Reset Psswrd" Command="{Binding ResetPass}"/>
+                    <MenuItem Header="New"          Command="{Binding NewUser}"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+
+            <ListView.View>
+                <GridView>
+
+                    <GridViewColumn x:Name="activeColumn" Header="Active" Width="40" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Margin="0" HorizontalAlignment="Center"
+                                          IsChecked="{Binding Active}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="userName"     Header="User Name" Width="80" DisplayMemberBinding="{Binding UserName}"/>
+                    <GridViewColumn x:Name="firstNameColumn" Header="First Name" Width="80" DisplayMemberBinding="{Binding FirstName}" />
+                    <GridViewColumn x:Name="lastNameColumn" Header="Last Name" Width="80" DisplayMemberBinding="{Binding LastName}"/>
+                    <GridViewColumn x:Name="RoleX" Header="Role" Width="80" DisplayMemberBinding="{Binding RoleName}" />
+                    <GridViewColumn x:Name="createdByColumn" Header="Created By" Width="80" DisplayMemberBinding="{Binding CreatedByName}"/>
+                    <GridViewColumn x:Name="lastLoginDateColumn" Header="Last Login Date" Width="100" DisplayMemberBinding="{Binding LastLoginDate, StringFormat={}{0:dd.MM.yyyy}}" />
+                    <GridViewColumn x:Name="modifiedByColumn" Header="Modified By" Width="100" DisplayMemberBinding="{Binding ModyfiedByName}"/>
+                </GridView>
+            </ListView.View>
+            
+        </ListView>
+
+        <StackPanel  Grid.Row="9" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="8" FlowDirection="RightToLeft" Background="Bisque" Margin="0,9,20,0" Orientation="Horizontal" Width="740" HorizontalAlignment="Right">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="10,0,10,0"/>
+                    <Setter Property="Width" Value="80"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <Button HorizontalAlignment="Right" Command="{Binding NewUser}">New</Button>
+        </StackPanel>
+
+    </Grid>    
+</UserControl>
