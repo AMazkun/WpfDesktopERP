@@ -22,6 +22,7 @@ All Roles:
 - Main Window
 - Change password
 - Log recording
+- Log view
 
 Admin Role
 - add user

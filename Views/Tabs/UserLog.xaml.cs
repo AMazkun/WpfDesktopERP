@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,8 +31,17 @@ namespace WpfApp5.Views.Tabs
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            dataManager.userLogs = DataWorker.GetUserLog(DataManager.LoggedUser.Id);
+            dataManager.FetchLog.Execute(this);
+            DataManager.PointedUser = null;
             DataContext = dataManager;
+        }
+
+        private void FetchLog(object sender, RoutedEventArgs e)
+        {
+            bool error = false;
+
+            if (error) { return; }
+            dataManager.FetchLog.Execute(this);
         }
     }
 }

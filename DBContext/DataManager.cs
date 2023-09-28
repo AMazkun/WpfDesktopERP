@@ -404,6 +404,21 @@ namespace WpfApp5.DBContext
             }
         }
 
+        private RelayCommand fetchLog;
+        public RelayCommand FetchLog
+        {
+            get
+            {
+                return fetchLog ?? new RelayCommand(obj =>
+                {
+                    int userId = PointedUser != null ? PointedUser.Id : LoggedUser.Id;
+                    ResultStr = "Fetch log ...";
+                    userLogs = DataWorker.GetUserLog(userId);
+                    ResultStr = "";
+                });
+            }
+        }
+
         private void OpenEditUserWindowMethod()
         {
             UserView editUserWindow = new UserView();
