@@ -84,6 +84,7 @@ namespace WpfApp5.Views.MainRoles
                 mainTabControl.Items.Add(tabitem);
 
                 UserLog userLog = new UserLog();
+                userLog.OnlySelf = false;
                 tabitem.Content = userLog;
                 tabitem.Focus();
             }

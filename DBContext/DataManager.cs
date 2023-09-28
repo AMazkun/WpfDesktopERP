@@ -8,6 +8,7 @@ using WpfApp5.Controllers;
 using WpfApp5.ViewControls;
 using WpfApp5.Views;
 using WpfApp5.Views.Forms;
+using WpfApp5.Views.Tabs;
 
 namespace WpfApp5.DBContext
 {
@@ -146,7 +147,7 @@ namespace WpfApp5.DBContext
             get { return _resultStr; }
             set
             {
-                if (LoggedUser != null) DataWorker.Log(LoggedUser.Id, value);
+                if (LoggedUser != null) DataWorker.Log(value);
                 ResultStr = value;
             }
         }
@@ -156,7 +157,7 @@ namespace WpfApp5.DBContext
             set
             {
                 if (value != "") { 
-                    DataWorker.LogError(LoggedUser.Id, value);
+                    DataWorker.LogError(value);
                     _resultStr = ERROR;
                     Handlers.ShowMessage(value);
                 }
@@ -411,10 +412,39 @@ namespace WpfApp5.DBContext
             {
                 return fetchLog ?? new RelayCommand(obj =>
                 {
-                    int userId = PointedUser != null ? PointedUser.Id : LoggedUser.Id;
                     ResultStr = "Fetch log ...";
-                    userLogs = DataWorker.GetUserLog(userId);
-                    ResultStr = "";
+                    if (obj ==  null) {
+                        ResultStr = "Can't get log";
+                        return; 
+                    }
+                    DateTime formDate = ((UserLog)obj).fromDate;
+                    DateTime toDate = ((UserLog)obj).toDate;
+
+                    // if logg for all users
+                    if (((UserLog)obj).GetAllUsersLog)
+                    {
+                        userLogs = DataWorker.GetUserLog(null, formDate, toDate);
+                        ResultStr = "";
+                        return;
+                    }
+
+                    // if get log dor selected user
+                    User user = (User)((UserLog)obj).userNameComboBox.SelectedItem;
+
+                    // no selected user - then for logged user
+                    if (user == null) { user = DataManager.LoggedUser; }
+
+                    if (user != null)
+                    {
+                        userLogs = DataWorker.GetUserLog(user, formDate, toDate);
+                        ResultStr = "";
+                        return;
+                    }
+
+                    // no user selected at all
+                    ResultStr = "Can't get log";
+                    return;
+
                 });
             }
         }

@@ -26,5 +26,7 @@ namespace WpfApp5.DBContext
         public string Message { get; set; }
 
         public virtual User theUser { get; set; }
+        public virtual string theUserName { get { return DataWorker.GetUserNameById(User ?? 0); } }
+
     }
 }

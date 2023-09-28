@@ -10,11 +10,16 @@ namespace WpfApp5.DBContext
     public static class DataWorker
     {
         #region USER.DB
-        internal static List<Log> GetUserLog(int id)
+        internal static List<Log> GetUserLog(User user, DateTime fromDate, DateTime toDate)
         {
             using (AppDbContext db = new AppDbContext())
             {
-                var result = db.Logs.Where(l => l.User == id).ToList();
+                List<Log> result = null;
+                int id = user != null ? user.Id : 0;
+                if (fromDate == DateTime.MinValue && toDate == DateTime.MinValue) result = db.Logs.Where(l =>  (id == 0) || (l.User == id)).ToList();
+                if (fromDate != DateTime.MinValue && toDate == DateTime.MinValue) result = db.Logs.Where(l => ((id == 0) || (l.User == id)) && l.Date >= fromDate).ToList();
+                if (fromDate == DateTime.MinValue && toDate != DateTime.MinValue) result = db.Logs.Where(l => ((id == 0) || (l.User == id)) && l.Date <= toDate).ToList();
+                if (fromDate != DateTime.MinValue && toDate != DateTime.MinValue) result = db.Logs.Where(l => ((id == 0) || (l.User == id)) && l.Date >= fromDate && l.Date <= toDate).ToList();
                 return result;
             }
         }
@@ -334,16 +339,17 @@ namespace WpfApp5.DBContext
 
         #region LOG
 
-        internal static void Log(int id, string value, bool err = false)
+        internal static void Log(string value, bool err = false)
         {
             using (AppDbContext db = new AppDbContext())
             {
+                int userId = DataManager.LoggedUser != null ? DataManager.LoggedUser.Id : 0;
                 Log log = new Log
                 {
                     Id = (db.Logs.Count() > 0) ? db.Logs.Max(l => l.Id) + 1 : 1,
                     Date = DateTime.Now,
                     Error = false,
-                    User = id,
+                    User = userId,
                     Address = App.LocalIP,
                     Message = value
                 };
@@ -353,9 +359,9 @@ namespace WpfApp5.DBContext
             }
         }
 
-        internal static void LogError(int id, string value)
+        internal static void LogError(string value)
         {
-            Log(id, value, true);
+            Log(value, true);
         }
 
         #endregion LOG

@@ -18,45 +18,52 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="29*"/>
             <RowDefinition Height="29*"/>
             <RowDefinition Height="29*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel  Grid.Row="1" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="8" FlowDirection="RightToLeft" Background="Bisque" Margin="0,0,0,10" Orientation="Horizontal" Width="Auto" HorizontalAlignment="Right">
+        <StackPanel  Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="8" HorizontalAlignment="Right" Background="Bisque" Margin="0,0,0,0" Orientation="Horizontal" Width="Auto" >
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}">
-                    <Setter Property="Margin" Value="10,3,10,3"/>
+                    <Setter Property="Margin" Value="5,3,5,3"/>
                     <Setter Property="Width" Value="80"/>
                 </Style>
                 <Style TargetType="{x:Type DatePicker}">
-                    <Setter Property="Margin" Value="10,3,10,3"/>
+                    <Setter Property="Margin" Value="5,3,5,3"/>
                     <Setter Property="Width" Value="120"/>
                 </Style>
             </StackPanel.Resources>
 
-            <Button HorizontalAlignment="Right" Click="FetchLog">Refresh</Button>
-            <DatePicker x:Name="LogToDate"   VerticalAlignment="Center" />
-            <Label Content="to" HorizontalAlignment="Left" Margin="3"  VerticalAlignment="Center"/>
-            <DatePicker x:Name="LogFromDate" VerticalAlignment="Center"/>
-            <Label Content="from" HorizontalAlignment="Left" Margin="3"  VerticalAlignment="Center"/>
-            <ComboBox x:Name="userNameComboBox" DisplayMemberPath="UserName" Height="NaN" HorizontalAlignment="Left"
-                      ItemsSource="{Binding allUsers}" SelectedItem="{Binding pointedUser}"
+            <Label x:Name="rowUserName" Content="User Name" HorizontalAlignment="Left" Margin="3"  VerticalAlignment="Center"/>
+            <ComboBox x:Name="userNameComboBox"  Height="NaN" HorizontalAlignment="Left"
+                      IsEditable="True" IsTextSearchEnabled="True"
+                      DisplayMemberPath="UserName"
+                      ItemsSource="{Binding allUsers}"
                       Margin="3" VerticalAlignment="Center" Width="120">
             </ComboBox>
-            <Label Content="User" HorizontalAlignment="Left" Margin="3"  VerticalAlignment="Center"/>
+            
+            <Label Content="from" HorizontalAlignment="Left" Margin="3"  VerticalAlignment="Center"/>
+            <DatePicker x:Name="LogFromDate" VerticalAlignment="Center"/>
+            <Label Content="up to" HorizontalAlignment="Left" Margin="3"  VerticalAlignment="Center"/>
+            <DatePicker x:Name="LogToDate"   VerticalAlignment="Center" />
+
+            <Button HorizontalAlignment="Right" Click="ClearFetchLog">Clear</Button>
+            <Button HorizontalAlignment="Right" Click="FetchLog">Refresh</Button>
         </StackPanel>
 
-        <DataGrid x:Name="logsDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding userLogs}" RowDetailsVisibilityMode="VisibleWhenSelected" 
+        <DataGrid x:Name="logsDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" 
+                  ItemsSource="{Binding userLogs}" SelectionChanged="logsDataGrid_SelectionChanged"
+                  SelectionMode = "Extended"
+                  RowDetailsVisibilityMode="VisibleWhenSelected" 
                   Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="2" Grid.RowSpan="5" >
             <DataGrid.Columns>
-                <DataGridTextColumn     x:Name="dateColumn"    Header="Date"    Binding="{Binding Date, StringFormat={}{0:dd.MM.yyyy  HH:mm}}" Width="105"  />
-                <DataGridTextColumn     x:Name="addressColumn" Header="Address" Binding="{Binding Address}"     Width="100"/>
-                <DataGridCheckBoxColumn x:Name="errorColumn"   Header="Error"   Binding="{Binding Error}"       Width="SizeToHeader"/>
-                <DataGridTextColumn     x:Name="messageColumn" Header="Message" Binding="{Binding Message}"     Width= "*" />
+                <DataGridTextColumn     x:Name="dateColumn"    Header="Date"    Binding="{Binding Date, Mode=OneWay, StringFormat={}{0:dd.MM.yyyy  HH:mm}}" Width="105" />
+                <DataGridTextColumn     x:Name="addressColumn" Header="Address" Binding="{Binding Address, Mode=OneWay}"     Width="100" />
+                <DataGridCheckBoxColumn x:Name="errorColumn"   Header="Error"   Binding="{Binding Error, Mode=OneWay}"       Width="SizeToHeader" />
+                <DataGridTextColumn     x:Name="messageColumn" Header="Message" Binding="{Binding Message, Mode=OneWay}"     Width= "*"   />
             </DataGrid.Columns>
         </DataGrid>
 

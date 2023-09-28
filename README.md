@@ -5,6 +5,7 @@ See screenshots
 
 ERP App Roles:
 - Admin
+- Manager
 - Developer
 - Constructor
 - Sales
